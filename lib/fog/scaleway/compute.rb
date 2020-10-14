@@ -15,6 +15,7 @@ module Fog
       requires   :scaleway_token
       requires   :scaleway_organization
       recognizes :scaleway_region
+      recognizes :scaleway_endpoint
       secrets    :scaleway_token
 
       model_path 'fog/scaleway/models/compute'
@@ -121,6 +122,7 @@ module Fog
           @token              = options[:scaleway_token]
           @organization       = options[:scaleway_organization]
           @region             = options[:scaleway_region] || 'fr-par-1'
+          @endpoint           = options[:scaleway_endpoint] || 'https://api.scaleway.com'
           @connection_options = options[:connection_options] || {}
         end
 
@@ -146,11 +148,7 @@ module Fog
         private
 
         def client
-          @client ||= Fog::Scaleway::Client.new(endpoint, @token, connection_options)
-        end
-
-        def endpoint
-          'https://api.scaleway.com'
+          @client ||= Fog::Scaleway::Client.new(@endpoint, @token, connection_options)
         end
 
         def connection_options
